@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace ConsoleApp4._4
@@ -69,8 +69,8 @@ namespace ConsoleApp4._4
         {
             char[,] map = ReadMap("map1");
 
-            int userX = 1;
-            int userY = 1;
+            int userX = 2;
+            int userY = 2;
 
             while (isPlaying)
             {
@@ -86,10 +86,20 @@ namespace ConsoleApp4._4
 
             DrawMap(map);
 
+            DrawUser(ref userY, ref userX);
+
+            PlayerMovment(map, ref userY, ref userX, ref isPlaying);            
+        }
+
+        static void DrawUser(ref int userY, ref int userX)
+        {
             Console.SetCursorPosition(userX, userY);
 
             Console.Write("@");
+        }
 
+        static void PlayerMovment(char[,] map, ref int userY, ref int userX, ref bool isPlaying)
+        {
             ConsoleKeyInfo payerMoveKey = Console.ReadKey();
 
             switch (payerMoveKey.Key)
@@ -122,8 +132,6 @@ namespace ConsoleApp4._4
                     isPlaying = false;
                     break;
             }
-
-            Console.Clear();
         }
 
         static char[,] ReadMap(string mapName)
