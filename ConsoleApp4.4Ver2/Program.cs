@@ -56,12 +56,12 @@ namespace ConsoleApp4._4
                 {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'  }
             };
 
-            int userY = 5;
-            int userX = 10;
+            int userPositionX = 10;
+            int userPositionY = 5;
 
             while (isPlaying)
             {
-                GamePlayLogic(map, ref userY, ref userX, ref isPlaying);
+                GamePlayLogic(map, userPositionY, userPositionX, ref isPlaying);
             }
         }
 
@@ -69,16 +69,16 @@ namespace ConsoleApp4._4
         {
             char[,] map = ReadMap("map1");
 
-            int userX = 2;
-            int userY = 2;
+            int userPositionX = 2;
+            int userPositionY = 2;
 
             while (isPlaying)
             {
-                GamePlayLogic(map, ref userY, ref userX, ref isPlaying);
+                GamePlayLogic(map, userPositionY, userPositionX, ref isPlaying);
             }
         }
 
-        static void GamePlayLogic(char[,] map, ref int userY, ref int userX, ref bool isPlaying)
+        static void GamePlayLogic(char[,] map, int userPositionY, int userPositionX, ref bool isPlaying)
         {
             Console.Clear();
 
@@ -86,46 +86,59 @@ namespace ConsoleApp4._4
 
             DrawMap(map);
 
-            DrawUser(ref userY, ref userX);
+            DrawUser(userPositionY, userPositionX);
 
-            PlayerMovment(map, ref userY, ref userX, ref isPlaying);            
+            Move(map, userPositionY, userPositionX, ref isPlaying);
         }
 
-        static void DrawUser(ref int userY, ref int userX)
+        static void DrawMap(char[,] map)
         {
-            Console.SetCursorPosition(userX, userY);
+            for (int i = 0; i < map.GetLength(0); i++)
+            {
+                for (int j = 0; j < map.GetLength(1); j++)
+                {
+                    Console.Write(map[i, j]);
+                }
+
+                Console.WriteLine();
+            }
+        }
+
+        static void DrawUser(int userY, int userPositionX)
+        {
+            Console.SetCursorPosition(userPositionX, userY);
 
             Console.Write("@");
         }
 
-        static void PlayerMovment(char[,] map, ref int userY, ref int userX, ref bool isPlaying)
+        static void Move(char[,] map, int userPositionY, int userPositionX, ref bool isPlaying)
         {
             ConsoleKeyInfo payerMoveKey = Console.ReadKey();
 
             switch (payerMoveKey.Key)
             {
                 case ConsoleKey.UpArrow:
-                    if (map[userY - 1, userX] != '#')
+                    if (map[userPositionY - 1, userPositionX] != '#')
                     {
-                        userY--;
+                        userPositionY--;
                     }
                     break;
                 case ConsoleKey.DownArrow:
-                    if (map[userY + 1, userX] != '#')
+                    if (map[userPositionY + 1, userPositionX] != '#')
                     {
-                        userY++;
+                        userPositionY++;
                     }
                     break;
                 case ConsoleKey.LeftArrow:
-                    if (map[userY, userX - 1] != '#')
+                    if (map[userPositionY, userPositionX - 1] != '#')
                     {
-                        userX--;
+                        userPositionX--;
                     }
                     break;
                 case ConsoleKey.RightArrow:
-                    if (map[userY, userX + 1] != '#')
+                    if (map[userPositionY, userPositionX + 1] != '#')
                     {
-                        userX++;
+                        userPositionX++;
                     }
                     break;
                 case ConsoleKey.Escape:
@@ -148,18 +161,6 @@ namespace ConsoleApp4._4
                 }
             }
             return map;
-        }
-
-        static void DrawMap(char[,] map)
-        {
-            for (int i = 0; i < map.GetLength(0); i++)
-            {
-                for (int j = 0; j < map.GetLength(1); j++)
-                {
-                    Console.Write(map[i, j]);
-                }
-                Console.WriteLine();
-            }
         }
     }
 }
